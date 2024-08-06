@@ -1,6 +1,6 @@
 # Large Language Models are Capable of Offering Cognitive Reappraisal, if Guided (COLM 2024)
 
-## Update (July 10, 2024)
+#### Update (July 10, 2024)
 - 🎉Our paper has been accepted by The First Conference on Language Modeling (COLM 2024)!
 
 We publicly release our code, model outputs, and expert psychologists’ evaluation data. If you find our work useful or relevant to your research, please consider citing our paper.
