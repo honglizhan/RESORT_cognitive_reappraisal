@@ -10,13 +10,11 @@ Title: <a href="https://arxiv.org/abs/2404.01288">Large Language Models are Capa
 Authors: <a href="https://honglizhan.github.io/">Hongli Zhan</a>, <a href="https://www.linkedin.com/in/allen-x-zheng/">Allen Zheng</a>, <a href="https://www.yoonkyunglee.com/">Yoon Kyung Lee</a>, <a href="https://www.jinasuh.com/">Jina Suh</a>, <a href="https://jessyli.com/">Junyi Jessy Li</a>, <a href="https://cascoglab.psy.utexas.edu/desmond/">Desmond C. Ong</a>
 
 ```bibtex
-@misc{zhan2024large,
+@inproceedings{zhan2024large,
       title={Large Language Models are Capable of Offering Cognitive Reappraisal, if Guided}, 
       author={Hongli Zhan and Allen Zheng and Yoon Kyung Lee and Jina Suh and Junyi Jessy Li and Desmond C. Ong},
       year={2024},
-      eprint={2404.01288},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+      booktitle = {Proceedings of the 1st Conference on Language Modeling},
 }
 ```
 
