@@ -14,7 +14,7 @@ Authors: <a href="https://honglizhan.github.io/">Hongli Zhan</a>, <a href="https
       title={Large Language Models are Capable of Offering Cognitive Reappraisal, if Guided}, 
       author={Hongli Zhan and Allen Zheng and Yoon Kyung Lee and Jina Suh and Junyi Jessy Li and Desmond C. Ong},
       year={2024},
-      booktitle = {Proceedings of the 1st Conference on Language Modeling},
+      booktitle={Proceedings of the 1st Conference on Language Modeling},
 }
 ```
 
