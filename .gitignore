@@ -168,9 +168,5 @@ clean_data.ipynb
 /model_outputs
 /source_data
 /utils
-/auth_keys
 
-/pipeline_components
-/prompts
-/pipeline-INDV.py
-/pipeline-ITER.py
+my_script_with_keys.sh
