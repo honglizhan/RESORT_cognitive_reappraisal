@@ -63,7 +63,7 @@ def setup_chat_agent(FLAGS):
     return ChatAgent
 
 
-def get_promts(path_to_appraisal_questions, path_to_reappraisal_guidance):
+def get_prompts(path_to_appraisal_questions, path_to_reappraisal_guidance):
     dimensions_df = pd.DataFrame(index = range(1, 25))
     dim_files = [path_to_appraisal_questions, path_to_reappraisal_guidance]
 

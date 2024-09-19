@@ -166,7 +166,8 @@ clean_data.ipynb
 /eval-human/annotations
 /eval-human/*.ipynb
 /model_outputs
-/source_data
+/model_outputs/*.ipynb
+/source_data/*.ipynb
 /utils
 
 my_script_with_keys.sh

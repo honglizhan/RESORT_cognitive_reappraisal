@@ -10,6 +10,6 @@ cd ..
 python3 -m pipeline-ITER \
     -model="gpt-4-turbo" \
     -input_data_path="./source_data/r_anger.jsonl" \
-    -output_path="./model_outputs/iterative_guided_refinement" \
+    -output_path="./model_outputs/ITER" \
     -experiment_mode="self-refine" \
     -use_azure

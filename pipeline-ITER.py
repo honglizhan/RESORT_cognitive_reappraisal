@@ -34,7 +34,7 @@ flags.DEFINE_string("path_to_appraisal_questions", "./prompts/appraisal_question
 flags.DEFINE_string("path_to_reappraisal_guidance", "./prompts/reappraisal_guidance.txt", "File with all re-appraisal guidance.")
 
 ### ------ Define experiment mode ------
-flags.DEFINE_enum("experiment_mode", "self-refine", ["self-refine", "+appr", "+cons", "+appr +cons"], "Specify experiment mode.")
+flags.DEFINE_enum("experiment_mode", "self-refine", ["self-refine", "+appr", "+cons", "+appr_+cons"], "Specify experiment mode.")
 flags.DEFINE_list("dimensions", [1, 4, 6, 7, 8, 23], "Specify the dimensions to look at.")
 
 ### ------ For GPT models, choose to use Azure or openai keys ------
@@ -60,7 +60,7 @@ def main(argv):
     else:
         model_name = FLAGS.model.split('/')[-1]
 
-    dimensions_df = utils.get_promts(FLAGS.path_to_appraisal_questions, FLAGS.path_to_reappraisal_guidance)
+    dimensions_df = utils.get_prompts(FLAGS.path_to_appraisal_questions, FLAGS.path_to_reappraisal_guidance)
 
     path = f"""{FLAGS.output_path}/{FLAGS.experiment_mode}/{FLAGS.input_data_path.split('/')[-1].split('.')[0]}"""
     if not os.path.exists(path):
@@ -83,8 +83,7 @@ def main(argv):
                 else:
                     baseline_prompt = prompt_loading.build_iterative_step_baseline(
                         post = row['Reddit Post'], prev_step = prev_output)
-                    step2_output = ChatAgent.chat(baseline_prompt) 
-                # print(step2_output)
+                    step2_output = ChatAgent.chat(baseline_prompt)
                 ChatAgent.reset()
 
                 row[f"intermediate_prompt_step_{i}"] = baseline_prompt
@@ -102,7 +101,6 @@ def main(argv):
                         post = row['Reddit Post'], prev_step = prev_output, guidance = guidance)
                     step2_output = ChatAgent.chat(baseline_prompt) 
 
-                # print(step2_output)
                 ChatAgent.reset()
 
                 row[f"intermediate_prompt_dim_{dim}"] = baseline_prompt
@@ -118,7 +116,6 @@ def main(argv):
 
                 # Step 1: Elicit appraisals
                 step1_output = ChatAgent.chat(prompt_step1)
-                # print(step1_output)
                 row[f"appraisal_question_dim_{dim}"] = f"""{dimensions_df.appraisal_questions[dim]} Please provide your answer in the following format: <likert>[]</likert><rationale>[]</rationale>. Your response should be concise and brief."""
                 row[f"appraisal_output_dim_{dim}"] = str(step1_output)
 
@@ -129,15 +126,14 @@ def main(argv):
                     baseline_prompt = prompt_loading.build_iterative_step_w_appraisal(
                         post = row['Reddit Post'], appraisal = step1_output, prev_step = prev_output)
                     step2_output = ChatAgent.chat(baseline_prompt)
-                
-                # print(step2_output)
+
                 ChatAgent.reset()
 
                 row[f"intermediate_prompt_dim_{dim}"] = baseline_prompt
                 row[f"intermediate_output_dim_{dim}"] = str(step2_output)
                 prev_output = str(step2_output)
 
-        elif FLAGS.experiment_mode == "+appr +cons":
+        elif FLAGS.experiment_mode == "+appr_+cons":
             baseline_prompt = "Based on the analysis above, please help the narrator of the text reappraise the situation. Your response should be concise and brief."
             for dim in FLAGS.dimensions:
                 prompt_step1 = prompt_loading.build_appraisal_prompt(
@@ -146,7 +142,6 @@ def main(argv):
 
                 # Step 1: Elicit appraisals
                 step1_output = ChatAgent.chat(prompt_step1)
-                # print(step1_output)
                 row[f"appraisal_question_dim_{dim}"] = f"""{dimensions_df.appraisal_questions[dim]} Please provide your answer in the following format: <likert>[]</likert><rationale>[]</rationale>. Your response should be concise and brief."""
                 row[f"appraisal_output_dim_{dim}"] = str(step1_output)
 
@@ -159,7 +154,6 @@ def main(argv):
                         post = row['Reddit Post'], appraisal = step1_output, prev_step = prev_output)
                     step2_output = ChatAgent.chat(baseline_prompt)
 
-                # print(step2_output)
                 ChatAgent.reset()
 
                 row[f"intermediate_prompt_.5_dim_{dim}"] = baseline_prompt
@@ -172,7 +166,6 @@ def main(argv):
                     post = row['Reddit Post'], prev_step = prev_output, guidance = guidance)
                 step2_output = ChatAgent.chat(baseline_prompt) 
 
-                # print(step2_output)
                 ChatAgent.reset()
 
                 row[f"intermediate_prompt_dim_{dim}"] = baseline_prompt

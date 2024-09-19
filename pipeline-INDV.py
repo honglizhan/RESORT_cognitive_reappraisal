@@ -35,7 +35,7 @@ flags.DEFINE_string("path_to_appraisal_questions", "./prompts/appraisal_question
 flags.DEFINE_string("path_to_reappraisal_guidance", "./prompts/reappraisal_guidance.txt", "File with all re-appraisal guidance.")
 
 ### ------ Define experiment mode ------
-flags.DEFINE_enum("experiment_mode", "vanilla", ["vanilla", "+appr", "+cons", "+appr +cons"], "Specify experiment mode.")
+flags.DEFINE_enum("experiment_mode", "vanilla", ["vanilla", "+appr", "+cons", "+appr_+cons"], "Specify experiment mode.")
 flags.DEFINE_list("dimensions", [1, 4, 6, 7, 8, 23], "Specify the dimensions to look at.")
 
 ### ------ For GPT models, choose to use Azure or openai keys ------
@@ -61,7 +61,7 @@ def main(argv):
     else:
         model_name = FLAGS.model.split('/')[-1]
 
-    dimensions_df = utils.get_promts(FLAGS.path_to_appraisal_questions, FLAGS.path_to_reappraisal_guidance)
+    dimensions_df = utils.get_prompts(FLAGS.path_to_appraisal_questions, FLAGS.path_to_reappraisal_guidance)
 
     path = f"""{FLAGS.output_path}/{FLAGS.experiment_mode}/{FLAGS.input_data_path.split('/')[-1].split('.')[0]}"""
     if not os.path.exists(path):
@@ -78,7 +78,6 @@ def main(argv):
         if FLAGS.experiment_mode == "vanilla":
             baseline_vanilla_prompt = "Please help the narrator of the text reappraise the situation. Your response should be concise and brief."
             step2_output = ChatAgent.chat(f"""[Text] {row['Reddit Post']}\n\n[Question] {baseline_vanilla_prompt}""")
-            # print(step2_output)
             ChatAgent.reset()
 
             row["reappraisal_question"] = baseline_vanilla_prompt
@@ -88,7 +87,6 @@ def main(argv):
             for dim in FLAGS.dimensions:
                 dim_prompt = f"""Please help the narrator of the text reappraise the situation. {dimensions_df.reappraisal_guidance[dim]} Your response should be concise and brief."""
                 step2_output = ChatAgent.chat(f"""[Text] {row['Reddit Post']}\n\n[Question] {dim_prompt}""")
-                print(step2_output)
                 ChatAgent.reset()
 
                 row[f"reappraisal_question_dim_{dim}"] = dim_prompt
@@ -104,19 +102,17 @@ def main(argv):
 
                 # Step 1: Elicit appraisals
                 step1_output = ChatAgent.chat(prompt_step1)
-                # print(step1_output)
                 row[f"appraisal_question_dim_{dim}"] = f"""{dimensions_df.appraisal_questions[dim]} Please provide your answer in the following format: <likert>[]</likert><rationale>[]</rationale>. Your response should be concise and brief."""
                 row[f"appraisal_output_dim_{dim}"] = str(step1_output)
 
                 # Step 2: Ask baseline reappraisal prompt
                 step2_output = ChatAgent.chat(baseline_prompt)
-                # print(step2_output)
                 ChatAgent.reset()
 
                 row[f"reappraisal_question_dim_{dim}"] = baseline_prompt
                 row[f"reappraisal_output_dim_{dim}"] = str(step2_output)
 
-        elif FLAGS.experiment_mode == "+appr +cons":
+        elif FLAGS.experiment_mode == "+appr_+cons":
             for dim in FLAGS.dimensions:
                 prompt_step1 = prompt_loading.build_appraisal_prompt(
                     text = row['Reddit Post'],
@@ -125,14 +121,12 @@ def main(argv):
 
                 # Step 1: Elicit appraisals
                 step1_output = ChatAgent.chat(prompt_step1)
-                # print(step1_output)
                 row[f"appraisal_question_dim_{dim}"] = f"""{dimensions_df.appraisal_questions[dim]} Please provide your answer in the following format: <likert>[]</likert><rationale>[]</rationale>. Your response should be concise and brief."""
                 row[f"appraisal_output_dim_{dim}"] = str(step1_output)
 
                 # Step 2: Ask to reappraise
                 dim_prompt = f"""Based on the analysis above, please help the narrator of the text reappraise the situation. {dimensions_df.reappraisal_guidance[dim]} Your response should be concise and brief."""
                 step2_output = ChatAgent.chat(dim_prompt)
-                # print(step2_output)
                 ChatAgent.reset()
 
                 row[f"reappraisal_question_dim_{dim}"] = dim_prompt
