@@ -163,10 +163,15 @@ to_jsonl.ipynb
 clean_data.ipynb
 
 /eval-gpt4
+
 /eval-human/annotations
 /eval-human/*.ipynb
-/model_outputs
+
+/model_outputs/*/*/r_*
 /model_outputs/*.ipynb
+/model_outputs/*/*.ipynb
+/model_outputs/oracle
+
 /source_data/*.ipynb
 /utils
 
