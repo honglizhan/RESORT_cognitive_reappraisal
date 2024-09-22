@@ -165,7 +165,6 @@ clean_data.ipynb
 /eval-gpt4/*/*/*/r_*
 /eval-gpt4/*.ipynb
 /eval-gpt4/*/*.ipynb
-/eval-gpt4/reddit_top_comment
 
 /eval-human/annotations
 /eval-human/*.ipynb
