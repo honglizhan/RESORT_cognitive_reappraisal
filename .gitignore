@@ -168,6 +168,7 @@ clean_data.ipynb
 
 /eval-human/annotations
 /eval-human/*.ipynb
+!/eval-human/\[analysis\]-table3_results.ipynb
 
 /model_outputs/*/*/r_*
 /model_outputs/*.ipynb
